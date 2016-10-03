@@ -1,23 +1,23 @@
 $( document ).ready(function(){
-  const w = 900;
+  const w = 950;
   const h = 600;
+  const margin = {
+    top: 50,
+    bottom: 80,
+    left: 60,
+    right: 10
+  }
   function render(base, data){
-    const margin = {
-      top: 90,
-      bottom: 90,
-      right: 90,
-      left: 90
-    }
     const width = w - (margin.left + margin.right);
     const height = h - (margin.top + margin.bottom);
 
     const svg = d3.select("#canvas")
                   .append("svg")
                   .attr("id","chart")
-                  .attr("width", width)
-                  .attr("height", height)
+                  .attr("width", w)
+                  .attr("height", h)
 
-    const chart = d3.select("#chart")
+    const chart = svg.append("g")
                     .classed("display", true)
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -26,18 +26,13 @@ $( document ).ready(function(){
 
     const x = d3.scaleTime()
                 .domain(d3.extent(data,function(d){
-                  // console.log(yearParser(d.year))
                   let year = yearParser(d.year)
-                  return d.year
+                  return year
                 }))
-                .range([0,width])
-
+                .range([0,width]);
+                
     const y = d3.scaleTime()
-                .domain(d3.extent(data,function(d){
-                  // console.log(monthParser(d.month))
-                  let month = monthParser(d.month)
-                  return d.month
-                }))
+                .domain([monthParser(data[0].month),monthParser(data[11].month)])
                 .range([0,height])
 
     const xAxis = d3.axisBottom(x)
@@ -47,6 +42,16 @@ $( document ).ready(function(){
                     .tickFormat(d3.timeFormat("%B"))
     function drawAxis(params){
       //draw xAxis
+      this.append("g")
+          .call(params.axis.x)
+          .classed("x axis", true)
+          .attr("transform", "translate(0,"+ height +")")
+
+      //draw yAxis
+      this.append("g")
+          .call(params.axis.y)
+          .classed("y axis",true)
+          .attr("transform","translate(0,0)")
     }
 
     function plot(params){

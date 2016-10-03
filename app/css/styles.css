@@ -1,6 +1,8 @@
 body, html {
-  margin: 25px auto;
   text-align: center; }
+
+#canvas {
+  margin: 25px auto; }
 
 #chart {
   border: 1px solid black; }
