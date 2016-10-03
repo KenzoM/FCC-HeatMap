@@ -1,6 +1,6 @@
 $( document ).ready(function(){
   const w = 900;
-  const h = 800;
+  const h = 600;
   function render(base, data){
     const margin = {
       top: 90,
@@ -19,8 +19,51 @@ $( document ).ready(function(){
 
     const chart = d3.select("#chart")
                     .classed("display", true)
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    const yearParser = d3.timeParse("%Y")
+    const monthParser = d3.timeParse("%m")
+
+    const x = d3.scaleTime()
+                .domain(d3.extent(data,function(d){
+                  // console.log(yearParser(d.year))
+                  let year = yearParser(d.year)
+                  return d.year
+                }))
+                .range([0,width])
+
+    const y = d3.scaleTime()
+                .domain(d3.extent(data,function(d){
+                  // console.log(monthParser(d.month))
+                  let month = monthParser(d.month)
+                  return d.month
+                }))
+                .range([0,height])
+
+    const xAxis = d3.axisBottom(x)
+                    .tickFormat(d3.timeFormat("%Y"))
+
+    const yAxis = d3.axisLeft(y)
+                    .tickFormat(d3.timeFormat("%B"))
+    function drawAxis(params){
+      //draw xAxis
+    }
+
+    function plot(params){
+      if (params.initialize){
+        drawAxis.call(this,params)
+      }
+    }
+
+    plot.call(chart,{
+      base: base,
+      data: data,
+      axis: {
+        x: xAxis,
+        y: yAxis
+      },
+      initialize: true
+    })
   }
   const url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
   $.ajax({
@@ -45,7 +88,6 @@ $( document ).ready(function(){
       let errorMessage = document.createElement("h1");
       errorMessage.innerHTML = "ERROR 404: File Not Found!"
       errorMessage.className = "errorMessage";
-
       chart.appendChild(errorMessage)
     }
   });
