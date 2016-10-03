@@ -1,5 +1,5 @@
 $( document ).ready(function(){
-  const w = 950;
+  const w = 1250;
   const h = 600;
   const margin = {
     top: 50,
@@ -30,7 +30,7 @@ $( document ).ready(function(){
                   return year
                 }))
                 .range([0,width]);
-                
+
     const y = d3.scaleTime()
                 .domain([monthParser(data[0].month),monthParser(data[11].month)])
                 .range([0,height])
@@ -39,7 +39,8 @@ $( document ).ready(function(){
                     .tickFormat(d3.timeFormat("%Y"))
 
     const yAxis = d3.axisLeft(y)
-                    .tickFormat(d3.timeFormat("%B"))
+                    .tickFormat(d3.timeFormat("%B")).tickSize(0).tickPadding(6);
+
     function drawAxis(params){
       //draw xAxis
       this.append("g")
@@ -52,12 +53,43 @@ $( document ).ready(function(){
           .call(params.axis.y)
           .classed("y axis",true)
           .attr("transform","translate(0,0)")
+            .selectAll("text")
+            // .attr("dy",-15)
     }
 
     function plot(params){
       if (params.initialize){
         drawAxis.call(this,params)
       }
+      //enter()
+      this.selectAll(".bar")
+        .data(params.data)
+        .enter()
+          .append("rect")
+          .classed("bar", true)
+      //update
+      this.selectAll(".bar")
+        .attr("x",function(d,i){
+          let year = yearParser(d.year)
+          return x(year)
+        })
+      this.selectAll(".bar")
+        .attr("y",function(d,i){
+          let month = monthParser(d.month)
+          return y(month)
+        })
+      this.selectAll(".bar")
+        .attr("width", 2)
+      this.selectAll(".bar")
+        .attr("height", 20)
+      this.selectAll(".bar")
+        .style("fill", "skyblue")
+
+      //exit()
+      this.selectAll(".bar")
+        .data(params.data)
+        .exit()
+        .remove()
     }
 
     plot.call(chart,{
