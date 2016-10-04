@@ -84,8 +84,11 @@ $( document ).ready(function(){
         .enter()
           .append("rect")
           .classed("degree", true)
+
       //update
       this.selectAll(".degree")
+        .transition()
+        .delay(100)
         .attr("x",function(d,i){
           let year = yearParser(d.year)
           return x(year)
@@ -104,7 +107,13 @@ $( document ).ready(function(){
           return colorScale(d.degree)
         })
       .on("mouseover",function(d,i){
-        console.log(d)
+        d3.select(this)
+          .style("stroke","gray")
+          .style("stroke-width", 2)
+      })
+      .on("mouseout",function(d,i){
+        d3.select(this)
+          .style("stroke","none")
       })
 
       //exit()
