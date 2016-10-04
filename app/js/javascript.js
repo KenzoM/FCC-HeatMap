@@ -16,12 +16,11 @@ $( document ).ready(function(){
     const height = h - (margin.top + margin.bottom);
     const yOffset = 40;
 
+    //lets create new object to add degree key and its value
     data = rawData.map( oneData  => {
       let degree = base + oneData.variance
       return Object.assign({}, oneData, {degree: degree})
     })
-
-    console.log(data)
 
     const svg = d3.select("#canvas")
                   .append("svg")
@@ -53,6 +52,12 @@ $( document ).ready(function(){
     const yAxis = d3.axisLeft(y)
                     .tickFormat(d3.timeFormat("%B")).tickSize(0).tickPadding(6);
 
+    const colorScale = d3.scaleQuantile()
+                          .domain(d3.extent(data,function(d){
+                            return d.degree
+                          }))
+                          .range(colors)
+                          
     function drawAxis(params){
       //draw xAxis
       this.append("g")
@@ -95,7 +100,9 @@ $( document ).ready(function(){
       this.selectAll(".bar")
         .attr("height", yOffset)
       this.selectAll(".bar")
-        .style("fill", "skyblue")
+        .style("fill", function(d,i){
+          return colorScale(d.degree)
+        })
       .on("mouseover",function(d,i){
         console.log(d)
       })
