@@ -3,7 +3,7 @@ $( document ).ready(function(){
   const h = 600;
   const margin = {
     top: 50,
-    bottom: 80,
+    bottom: 90,
     left: 100,
     right: 20
   }
@@ -86,6 +86,7 @@ $( document ).ready(function(){
                             return d.degree
                           }))
                           .range(colors)
+
     function toolTipText(d){
       const rawMonth = monthParser(d.month);
       const monthFormat = d3.timeFormat("%B");
@@ -96,6 +97,42 @@ $( document ).ready(function(){
       text += 'Variance: '+d.variance +' °C'+ '<br>';
       return text
     }
+    //credit: Mark from stackoverflow. Thanks for the help
+    function drawLegend(){
+      const legend = this.select(".x.axis").append("g").classed("legend", true)
+      const legW = 30;
+
+    legend.selectAll('rect')
+      .data(colorScale.range())
+      .enter()
+      .append('rect')
+      .attr('width', legW)
+      .attr('x', function(d,i){
+        return (i + 28) * legW;
+      })
+      .attr('y', 50)
+      .attr('height', 20)
+        .style('fill', function(d){
+         return d;
+    });
+
+    legend.selectAll('text')
+      //[0].concat is use to add '0' label for legend
+      .data([0].concat(colorScale.quantiles()))
+      .enter()
+      .append('text')
+      .attr('x', function(d,i){
+       return (i + 28) * legW;
+      })
+      .attr('y', 85)
+      .text(function(d,i){
+          let value = Math.round(d*10)/10;
+          return  value;
+      })
+      .attr("dx",15)
+      .style('fill', 'black')
+      .style('stroke', 'none');
+     }
 
     function drawAxis(params){
       //draw xAxis
@@ -187,6 +224,8 @@ $( document ).ready(function(){
         .data(params.data)
         .exit()
         .remove()
+
+        drawLegend.call(this);
     }
 
     plot.call(chart,{
