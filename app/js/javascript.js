@@ -11,10 +11,17 @@ $( document ).ready(function(){
               "#e6f598", "#ffffbf", "#fee08b", "#fdae61",
               "#f46d43", "#d53e4f", "#9e0142"];
 
-  function render(base, data){
+  function render(base, rawData){
     const width = w - (margin.left + margin.right);
     const height = h - (margin.top + margin.bottom);
     const yOffset = 40;
+
+    data = rawData.map( oneData  => {
+      let degree = base + oneData.variance
+      return Object.assign({}, oneData, {degree: degree})
+    })
+
+    console.log(data)
 
     const svg = d3.select("#canvas")
                   .append("svg")
