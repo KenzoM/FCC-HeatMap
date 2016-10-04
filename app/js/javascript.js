@@ -5,7 +5,7 @@ $( document ).ready(function(){
     top: 50,
     bottom: 90,
     left: 100,
-    right: 20
+    right: 30
   }
 
   function title(){
@@ -129,9 +129,10 @@ $( document ).ready(function(){
           let value = Math.round(d*10)/10;
           return  value;
       })
-      .attr("dx",15)
+      .attr("dx",13)
       .style('fill', 'black')
-      .style('stroke', 'none');
+      .style('stroke', 'none')
+      .style("font-size",15);
      }
 
     function drawAxis(params){
@@ -141,7 +142,7 @@ $( document ).ready(function(){
           .classed("x axis", true)
           .attr("transform", "translate(0,"+ height +")")
           .selectAll("text")
-            .style("font-size",16)
+            .style("font-size",20)
 
       //draw yAxis
       this.append("g")
@@ -150,7 +151,7 @@ $( document ).ready(function(){
           .attr("transform","translate(0,0)")
             .selectAll("text")
             .attr("dy",25)
-            .style("font-size",14)
+            .style("font-size",16)
 
       //label x axis
       this.select(".x.axis")
