@@ -87,15 +87,14 @@ $( document ).ready(function(){
                           }))
                           .range(colors)
     function toolTipText(d){
-      const rawMonth = monthParser(d.month)
-      const monthFormat = d3.timeFormat("%B")
+      const rawMonth = monthParser(d.month);
+      const monthFormat = d3.timeFormat("%B");
 
       const month = monthFormat(rawMonth)
-      let text = '<strong>' + month + " " + d.year + '</strong>'+ '<br>'
-      text +=  d.degree.toFixed(3) +' °C'+ '<br>'
-      text += 'Variance: '+d.variance +' °C'+ '<br>'
+      let text = '<strong>' + month + " " + d.year + '</strong>'+ '<br>';
+      text +=  d.degree.toFixed(3) +' °C'+ '<br>';
+      text += 'Variance: '+d.variance +' °C'+ '<br>';
       return text
-
     }
 
     function drawAxis(params){

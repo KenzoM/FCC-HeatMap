@@ -3,10 +3,13 @@ body, html {
   background: #e2e2e2; }
 
 #canvas {
-  margin: 25px auto;
+  margin: 65px auto;
   width: 1300px;
   height: 600;
-  background: white; }
+  background: white;
+  -webkit-box-shadow: 0px 0px 31px -5px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 31px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 31px -5px rgba(0, 0, 0, 0.5); }
 
 .title {
   padding-top: 11px;
