@@ -64,6 +64,8 @@ $( document ).ready(function(){
           .call(params.axis.x)
           .classed("x axis", true)
           .attr("transform", "translate(0,"+ height +")")
+          .selectAll("text")
+            .style("font-size",16)
 
       //draw yAxis
       this.append("g")
@@ -72,6 +74,7 @@ $( document ).ready(function(){
           .attr("transform","translate(0,0)")
             .selectAll("text")
             .attr("dy",25)
+            .style("font-size",14)
 
       //label x axis
       this.select(".x.axis")
