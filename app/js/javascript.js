@@ -31,6 +31,11 @@ $( document ).ready(function(){
 
   }
   function render(base, rawData){
+    let toolTip = d3.select("#canvas")
+                    .append("div")
+                    .classed("toolTip",true)
+                    .style("opacity",0)
+
     const colors = ["#5e4fa2", "#3288bd", "#66c2a5", "#abdda4",
                 "#e6f598", "#ffffbf", "#fee08b", "#fdae61",
                 "#f46d43", "#d53e4f", "#9e0142"];
@@ -44,6 +49,7 @@ $( document ).ready(function(){
       let degree = base + oneData.variance
       return Object.assign({}, oneData, {degree: degree})
     })
+
 
     const svg = d3.select("#canvas")
                   .append("svg")
@@ -80,6 +86,17 @@ $( document ).ready(function(){
                             return d.degree
                           }))
                           .range(colors)
+    function toolTipText(d){
+      const rawMonth = monthParser(d.month)
+      const monthFormat = d3.timeFormat("%B")
+
+      const month = monthFormat(rawMonth)
+      let text = '<strong>' + month + " " + d.year + '</strong>'+ '<br>'
+      text +=  d.degree.toFixed(3) +' °C'+ '<br>'
+      text += 'Variance: '+d.variance +' °C'+ '<br>'
+      return text
+
+    }
 
     function drawAxis(params){
       //draw xAxis
@@ -148,11 +165,20 @@ $( document ).ready(function(){
           return colorScale(d.degree)
         })
       .on("mouseover",function(d,i){
+        let text = toolTipText(d)
+        toolTip.transition()
+              .style("opacity",.9)
+        toolTip.html(text)
+              .style("left", (d3.event.pageX + 15) + "px")
+              .style("top", (d3.event.pageY - 28) + "px")
+
         d3.select(this)
           .style("stroke","gray")
-          .style("stroke-width", 2)
+          .style("stroke-width", 3)
       })
       .on("mouseout",function(d,i){
+        toolTip.transition()
+          .style("opacity",0)
         d3.select(this)
           .style("stroke","none")
       })
@@ -173,6 +199,7 @@ $( document ).ready(function(){
       },
       initialize: true
     })
+
   }
   const url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
   $.ajax({
