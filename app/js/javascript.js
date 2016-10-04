@@ -7,9 +7,14 @@ $( document ).ready(function(){
     left: 60,
     right: 10
   }
+  const colors = ["#5e4fa2", "#3288bd", "#66c2a5", "#abdda4",
+              "#e6f598", "#ffffbf", "#fee08b", "#fdae61",
+              "#f46d43", "#d53e4f", "#9e0142"];
+
   function render(base, data){
     const width = w - (margin.left + margin.right);
     const height = h - (margin.top + margin.bottom);
+    const yOffset = 40;
 
     const svg = d3.select("#canvas")
                   .append("svg")
@@ -33,7 +38,7 @@ $( document ).ready(function(){
 
     const y = d3.scaleTime()
                 .domain([monthParser(data[0].month),monthParser(data[11].month)])
-                .range([0,height])
+                .range([0,height-yOffset])
 
     const xAxis = d3.axisBottom(x)
                     .tickFormat(d3.timeFormat("%Y"))
@@ -54,7 +59,7 @@ $( document ).ready(function(){
           .classed("y axis",true)
           .attr("transform","translate(0,0)")
             .selectAll("text")
-            // .attr("dy",-15)
+            .attr("dy",25)
     }
 
     function plot(params){
@@ -79,11 +84,14 @@ $( document ).ready(function(){
           return y(month)
         })
       this.selectAll(".bar")
-        .attr("width", 2)
+        .attr("width", 4)
       this.selectAll(".bar")
-        .attr("height", 20)
+        .attr("height", yOffset)
       this.selectAll(".bar")
         .style("fill", "skyblue")
+      .on("mouseover",function(d,i){
+        console.log(d)
+      })
 
       //exit()
       this.selectAll(".bar")
@@ -111,7 +119,7 @@ $( document ).ready(function(){
     },
     complete: () =>{
     },
-    success: (data) =>{
+    success: data =>{
       const baseTemperature = data.baseTemperature;
       const dataAPI = data.monthlyVariance;
       render(baseTemperature,dataAPI);
