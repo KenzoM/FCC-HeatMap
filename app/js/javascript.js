@@ -57,7 +57,7 @@ $( document ).ready(function(){
                             return d.degree
                           }))
                           .range(colors)
-                          
+
     function drawAxis(params){
       //draw xAxis
       this.append("g")
@@ -79,27 +79,27 @@ $( document ).ready(function(){
         drawAxis.call(this,params)
       }
       //enter()
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .data(params.data)
         .enter()
           .append("rect")
-          .classed("bar", true)
+          .classed("degree", true)
       //update
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .attr("x",function(d,i){
           let year = yearParser(d.year)
           return x(year)
         })
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .attr("y",function(d,i){
           let month = monthParser(d.month)
           return y(month)
         })
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .attr("width", 4)
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .attr("height", yOffset)
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .style("fill", function(d,i){
           return colorScale(d.degree)
         })
@@ -108,7 +108,7 @@ $( document ).ready(function(){
       })
 
       //exit()
-      this.selectAll(".bar")
+      this.selectAll(".degree")
         .data(params.data)
         .exit()
         .remove()
