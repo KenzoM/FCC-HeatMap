@@ -4,7 +4,7 @@ $( document ).ready(function(){
   const margin = {
     top: 50,
     bottom: 80,
-    left: 60,
+    left: 100,
     right: 10
   }
   const colors = ["#5e4fa2", "#3288bd", "#66c2a5", "#abdda4",
@@ -72,6 +72,21 @@ $( document ).ready(function(){
           .attr("transform","translate(0,0)")
             .selectAll("text")
             .attr("dy",25)
+
+      //label x axis
+      this.select(".x.axis")
+          .append("text")
+          .classed("x axis-label",true)
+          .attr("transform","translate(-60,"+ -height/2 +") rotate(-90)")
+          .style("fill","black")
+          .text("Months")
+
+      this.select(".y.axis")
+          .append("text")
+          .classed("y axis-label",true)
+          .attr("transform","translate("+ width/2 +","+ (height+50) +")")
+          .style("fill","black")
+          .text("Years")
     }
 
     function plot(params){
