@@ -1,17 +1,40 @@
 $( document ).ready(function(){
-  const w = 1250;
+  const w = 1300;
   const h = 600;
   const margin = {
     top: 50,
     bottom: 80,
     left: 100,
-    right: 10
+    right: 20
   }
-  const colors = ["#5e4fa2", "#3288bd", "#66c2a5", "#abdda4",
-              "#e6f598", "#ffffbf", "#fee08b", "#fdae61",
-              "#f46d43", "#d53e4f", "#9e0142"];
 
+  function title(){
+    const mainTitle = document.createElement("div");
+    mainTitle.innerHTML = "Monthly Global Land-Surface Temperature"
+    mainTitle.className = "title";
+
+    const year = document.createElement("div");
+    year.innerHTML = "1753 - 2015";
+    year.className = "year";
+
+    const description = document.createElement("div")
+    description.innerHTML = 'Temperatures are in Celsius and reported as anomalies relative to the Jan 1951-Dec 1980 average.<br>' +
+                    'Estimated Jan 1951-Dec 1980 absolute temperature ℃: 8.66 +/- 0.07';
+    description.className = "description"
+
+    let chart = document.getElementById("canvas")
+
+    chart.appendChild(mainTitle)
+    chart.appendChild(year)
+    chart.appendChild(description)
+
+
+  }
   function render(base, rawData){
+    const colors = ["#5e4fa2", "#3288bd", "#66c2a5", "#abdda4",
+                "#e6f598", "#ffffbf", "#fee08b", "#fdae61",
+                "#f46d43", "#d53e4f", "#9e0142"];
+
     const width = w - (margin.left + margin.right);
     const height = h - (margin.top + margin.bottom);
     const yOffset = 40;
@@ -47,7 +70,7 @@ $( document ).ready(function(){
                 .range([0,height-yOffset])
 
     const xAxis = d3.axisBottom(x)
-                    .tickFormat(d3.timeFormat("%Y"))
+                    .tickFormat(d3.timeFormat("%Y")).tickSize(9)
 
     const yAxis = d3.axisLeft(y)
                     .tickFormat(d3.timeFormat("%B")).tickSize(0).tickPadding(6);
@@ -87,7 +110,7 @@ $( document ).ready(function(){
       this.select(".y.axis")
           .append("text")
           .classed("y axis-label",true)
-          .attr("transform","translate("+ width/2 +","+ (height+50) +")")
+          .attr("transform","translate("+ width/2 +","+ (height+60) +")")
           .style("fill","black")
           .text("Years")
     }
@@ -161,6 +184,7 @@ $( document ).ready(function(){
     complete: () =>{
     },
     success: data =>{
+      title()
       const baseTemperature = data.baseTemperature;
       const dataAPI = data.monthlyVariance;
       render(baseTemperature,dataAPI);
